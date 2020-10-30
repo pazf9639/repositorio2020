@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1077021351",
+    "firebase_url": "https://fragmento3.firebaseio.com",
+    "project_id": "fragmento3",
+    "storage_bucket": "fragmento3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077021351:android:f481e6b06494bc27e16982",
+        "android_client_info": {
+          "package_name": "mx.com.example.fragmento3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1077021351-gseeuu57nc1kj1kko42n5tt4la30uts8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANYHOhUX1auOqfDs2YShnmh3eoGXezt7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1077021351-gseeuu57nc1kj1kko42n5tt4la30uts8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

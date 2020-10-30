@@ -1,0 +1,10 @@
+package mx.com.example.fragmento3.gui.components;
+
+
+import androidx.fragment.app.Fragment;
+
+public interface NavigationHost {
+
+    void navigateTo(Fragment fragment, boolean addToBackStack);
+
+}
