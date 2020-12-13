@@ -60,7 +60,7 @@ public class Administra extends Fragment {
         binding.fabCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((NavigationHost)getActivity()).navigateTo(new AgregFragment(), true);
+                ((NavigationHost)getActivity()).navigateTo(new Agrega(), true);
             }
         });
         return view;

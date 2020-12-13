@@ -46,7 +46,7 @@ import mx.com.example.fragmento3.model.Juego;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AgregFragment extends Fragment {
+public class Agrega extends Fragment {
 
     private AppCompatImageView imageView;
     private EditText titulo;
@@ -195,7 +195,7 @@ public class AgregFragment extends Fragment {
 
                                 .centerCrop();
 
-                        Glide.with(AgregFragment.this)
+                        Glide.with(Agrega.this)
                                 .load(uri)
                                 .placeholder(R.drawable.ic_imagelis)
                                 .error(R.drawable.ic_broken)

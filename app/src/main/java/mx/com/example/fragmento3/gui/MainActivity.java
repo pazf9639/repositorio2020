@@ -11,7 +11,6 @@ import java.util.HashMap;
 
 import mx.com.example.fragmento3.R;
 import mx.com.example.fragmento3.core.FragmentosApplication;
-import mx.com.example.fragmento3.gui.components.LoginFragment;
 import mx.com.example.fragmento3.gui.components.NavigationHost;
 
 
@@ -91,6 +90,13 @@ public class MainActivity extends AppCompatActivity implements NavigationHost {
                 .add(R.id.contentPanel,new Administra())
                 .commit();
     }
+    public void Mio(View view) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.contentPanel,new MisJueg())
+                .commit();
+    }
+
     @Override
     public void navigateTo(androidx.fragment.app.Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction =

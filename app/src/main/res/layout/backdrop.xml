@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="admin"
-        android:text="Administrador" />
+        android:text="Administrar" />
 
     <View
         android:layout_width="56dp"
@@ -62,6 +62,7 @@
         style="@style/Widget.Ebony.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="Mio"
         android:text="Mis juegos"
         android:visibility="visible" />
 
