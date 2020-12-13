@@ -4,71 +4,92 @@ package mx.com.example.fragmento3.gui;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mx.com.example.fragmento3.R;
 import mx.com.example.fragmento3.databinding.FragmentRankeadoBinding;
+import mx.com.example.fragmento3.databinding.FragmentViejaBinding;
 import mx.com.example.fragmento3.gui.components.JuegosAdapter;
 import mx.com.example.fragmento3.gui.components.NavigationIconClickListener;
-import mx.com.example.fragmento3.model.juego;
+import mx.com.example.fragmento3.model.Juego;
 
 public class Rankeado extends Fragment {
-    private FragmentRankeadoBinding binding;
+
+    private @NonNull
+    FragmentRankeadoBinding binding;
     private View view;
     private Context context;
-    private List<juego> juegos=new ArrayList<>();
-    private Button botonRan;
+    private List<Juego> juegos = new ArrayList<>();
+
+    private static final String PATH_TOP = "Ranked";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         configGlobals();
-        configView(inflater,container);
-        configToolbar();
+        configView(inflater, container);
+        configToolBar();
         configUI();
         configRecycler();
 
+//        binding.fabCart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((NavigationHost)getActivity()).navigateTo(new AddFragment(), true);
+//            }
+//        });
         return view;
     }
 
-
     private void configGlobals() {
-        MainActivity.GLOBALS.put("rankeadoFragment",this);
+        MainActivity.GLOBALS.put("RankeadoFragment",this);
     }
 
+    private void configView(LayoutInflater inflater,ViewGroup container) {
+        binding = FragmentRankeadoBinding.inflate(inflater, container, false);
+        view = binding.getRoot();
+        context = container.getContext();
+    }
 
-    private void configToolbar() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null) {
-            activity.setSupportActionBar(binding.appBar2);
+    private void configToolBar() {
+        AppCompatActivity activity = (AppCompatActivity)getActivity();
+        if (activity!=null){
+            activity.setSupportActionBar(binding.appBar3);
         }
-        binding.appBar2.setNavigationOnClickListener(new NavigationIconClickListener(
-                context,
-                view.findViewById(R.id.gridRankeado),
+        binding.appBar3.setNavigationOnClickListener(new NavigationIconClickListener(
+                context, view.findViewById(R.id.gridRankeado),
                 new AccelerateDecelerateInterpolator(),
-                context.getDrawable(R.drawable.menu),
-                context.getDrawable(R.drawable.menu_open)
+                context.getDrawable(R.drawable.menu_open),
+                context.getDrawable(R.drawable.menu)
         ));
     }
-
 
     private void configUI() {
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
@@ -76,23 +97,51 @@ public class Rankeado extends Fragment {
         }
     }
 
-
     private void configRecycler() {
-        juegos.add(new juego(1,"zelda","Legend of zelda: Breath of the Wild",5,"Videojuego de acción-aventura de la serie The Legend of Zelda, desarrollado por Nintendo EPD"));
-        juegos.add(new juego(2,"gta","Grand theft Auto V",2," Videojuego de acción-aventura de mundo abierto desarrollado por el estudio Rockstar North"));
-        juegos.add(new juego(3,"redred","Red Dead Redemption 2",4," Videojuego de acción-aventura western, en un mundo abierto y en perspectiva de primera y tercera persona"));
-        juegos.add(new juego(4,"hunters","Metroid Prime hunters",3,"Videojuego de acción en primera persona para Nintendo DS"));
-        juegos.add(new juego(5,"hnfinite","Halo Infinite",5,"Videojuego de disparos en primera persona"));
-        binding.rclvRankeado.setHasFixedSize(true);
-        LinearLayoutManager layoutManager=new LinearLayoutManager(context, RecyclerView.HORIZONTAL,false);
-        binding.rclvRankeado.setLayoutManager(layoutManager);
-        binding.rclvRankeado.setAdapter(new JuegosAdapter(juegos));
-    }
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference(PATH_TOP);
 
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Juego juego = snapshot.getValue(Juego.class);
 
-    private void configView(LayoutInflater inflater,ViewGroup container) {
-        binding=FragmentRankeadoBinding.inflate(inflater,container,false);
-        view=binding.getRoot();
-        context=container.getContext();
+                if (!juegos.contains(juego)) {
+                    juegos.add(juego);
+                }
+                binding.rclvRanked.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Juego juego = snapshot.getValue(Juego.class);
+                if (juego != null){
+                    Log.i("juego","onChildChanged: " + juego.getIdJuego());
+                }
+
+                juegos.set(juegos.indexOf(juego),juego);
+                binding.rclvRanked.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        binding.rclvRanked.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL,false);
+        binding.rclvRanked.setLayoutManager(layoutManager);
+        binding.rclvRanked.setAdapter(new JuegosAdapter(juegos));
     }
 }

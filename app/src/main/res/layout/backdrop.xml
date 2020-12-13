@@ -42,6 +42,13 @@
         android:layout_height="wrap_content"
         android:onClick="Cate"
         android:text="Categorias" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mnAdmin"
+        style="@style/Widget.Ebony.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="admin"
+        android:text="Administrador" />
 
     <View
         android:layout_width="56dp"

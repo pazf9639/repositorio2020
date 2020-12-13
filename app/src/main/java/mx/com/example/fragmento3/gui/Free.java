@@ -3,15 +3,24 @@ package mx.com.example.fragmento3.gui;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,82 +28,120 @@ import java.util.List;
 import mx.com.example.fragmento3.R;
 import mx.com.example.fragmento3.databinding.FragmentFreeBinding;
 import mx.com.example.fragmento3.gui.components.JuegosAdapter;
+import mx.com.example.fragmento3.gui.components.NavigationHost;
 import mx.com.example.fragmento3.gui.components.NavigationIconClickListener;
-import mx.com.example.fragmento3.model.juego;
+import mx.com.example.fragmento3.model.Juego;
 
 public class Free extends Fragment{
 
-        private FragmentFreeBinding binding;
-        private View view;
-        private Context context;
-        private List<juego> juegos=new ArrayList<>();
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setHasOptionsMenu(true);
+    private @NonNull
+    FragmentFreeBinding binding;
+    private View view;
+    private Context context;
+    private List<Juego> juegos = new ArrayList<>();
 
-        }
-
-
-
+    private static final String PATH_TOP = "Free";
 
     @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            configGlobals();
-            configView(inflater,container);
-            configToolbar();
-            configUI();
-            configRecycler();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
-            return view;
-        }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        configGlobals();
+        configView(inflater, container);
+        configToolBar();
+        configUI();
+        configRecycler();
 
-
-        private void configGlobals() {
-            MainActivity.GLOBALS.put("FreeFragment",this);
-        }
-
-
-        private void configToolbar() {
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            if (activity != null) {
-                activity.setSupportActionBar(binding.appBar3);
+        binding.fabCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((NavigationHost)getActivity()).navigateTo(new AgregFragment(), true);
             }
-            binding.appBar3.setNavigationOnClickListener(new NavigationIconClickListener(
-                    context,
-                    view.findViewById(R.id.gridFree),
-                    new AccelerateDecelerateInterpolator(),
-                    context.getDrawable(R.drawable.menu),
-                    context.getDrawable(R.drawable.menu_open)
-            ));
+        });
+        return view;
+    }
+
+    private void configGlobals() {
+        MainActivity.GLOBALS.put("FreeFragment",this);
+    }
+
+    private void configView(LayoutInflater inflater,ViewGroup container) {
+        binding = FragmentFreeBinding.inflate(inflater, container, false);
+        view = binding.getRoot();
+        context = container.getContext();
+    }
+
+    private void configToolBar() {
+        AppCompatActivity activity = (AppCompatActivity)getActivity();
+        if (activity!=null){
+            activity.setSupportActionBar(binding.appBar4);
         }
+        binding.appBar4.setNavigationOnClickListener(new NavigationIconClickListener(
+                context, view.findViewById(R.id.gridFree),
+                new AccelerateDecelerateInterpolator(),
+                context.getDrawable(R.drawable.menu_open),
+                context.getDrawable(R.drawable.menu)
+        ));
+    }
 
+    private void configUI() {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            view.findViewById(R.id.gridFree).setBackground(getContext().getDrawable(R.drawable.product_grid_background_shape));
+        }
+    }
 
-        private void configUI() {
-            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-                view.findViewById(R.id.gridFree).setBackground(getContext().getDrawable(R.drawable.product_grid_background_shape));
+    private void configRecycler() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference(PATH_TOP);
+
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Juego juego = snapshot.getValue(Juego.class);
+
+                if (!juegos.contains(juego)) {
+                    juegos.add(juego);
+                }
+                binding.rclvFree.getAdapter().notifyDataSetChanged();
             }
-        }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Juego juego = snapshot.getValue(Juego.class);
+                if (juego != null){
+                    Log.i("juego","onChildChanged: " + juego.getIdJuego());
+                }
 
-        private void configRecycler() {
-            juegos.add(new juego(1,"destiny2","Destiny 2",5,"Videojuego de disparos en primera persona, desarrollado y publicado por Bungie"));
-            juegos.add(new juego(2,"league","League of Legends",2," Videojuego del género multijugador de arena de batalla en línea y deporte electrónico "));
-            juegos.add(new juego(3,"poke","Pokémon GO",4,"Videojuego de realidad aumentada basado en la localización desarrollado por Niantic"));
-            juegos.add(new juego(4,"runte","Legends of Runeterra",3,"Juego de cartas coleccionables digitales y gratuito desarrollado y publicado por Riot Games."));
-            juegos.add(new juego(5,"roc","Rocket League",5,"Videojuego que combina el fútbol con los vehículos"));
-            binding.rclvFree.setHasFixedSize(true);
-            LinearLayoutManager layoutManager=new LinearLayoutManager(context, RecyclerView.HORIZONTAL,false);
-            binding.rclvFree.setLayoutManager(layoutManager);
-            binding.rclvFree.setAdapter(new JuegosAdapter(juegos));
-        }
+                juegos.set(juegos.indexOf(juego),juego);
+                binding.rclvFree.getAdapter().notifyDataSetChanged();
+            }
 
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-        private void configView(LayoutInflater inflater,ViewGroup container) {
-            binding= FragmentFreeBinding.inflate(inflater,container,false);
-            view=binding.getRoot();
-            context=container.getContext();
-        }
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        binding.rclvFree.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL,false);
+        binding.rclvFree.setLayoutManager(layoutManager);
+        binding.rclvFree.setAdapter(new JuegosAdapter(juegos));
+    }
     }
 
 

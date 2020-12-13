@@ -1,34 +1,92 @@
 {
   "project_info": {
-    "project_number": "1077021351",
-    "firebase_url": "https://fragmento3.firebaseio.com",
-    "project_id": "fragmento3",
-    "storage_bucket": "fragmento3.appspot.com"
+    "project_number": "249459402776",
+    "firebase_url": "https://fragmento33.firebaseio.com",
+    "project_id": "fragmento33",
+    "storage_bucket": "fragmento33.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1077021351:android:f481e6b06494bc27e16982",
+        "mobilesdk_app_id": "1:249459402776:android:0aa0f6ffe824b80605fb6d",
         "android_client_info": {
           "package_name": "mx.com.example.fragmento3"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1077021351-gseeuu57nc1kj1kko42n5tt4la30uts8.apps.googleusercontent.com",
+          "client_id": "249459402776-49p13bj5l3obhf4ctgga3umjdi6b3mtc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyANYHOhUX1auOqfDs2YShnmh3eoGXezt7s"
+          "current_key": "AIzaSyDX-bmRML8cx_eNXYlDAmZTsWfOYJmNzko"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1077021351-gseeuu57nc1kj1kko42n5tt4la30uts8.apps.googleusercontent.com",
+              "client_id": "249459402776-49p13bj5l3obhf4ctgga3umjdi6b3mtc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249459402776:android:c56c8ee38382da9305fb6d",
+        "android_client_info": {
+          "package_name": "mx.com.example.fragments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249459402776-49p13bj5l3obhf4ctgga3umjdi6b3mtc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX-bmRML8cx_eNXYlDAmZTsWfOYJmNzko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249459402776-49p13bj5l3obhf4ctgga3umjdi6b3mtc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249459402776:android:17bef6a7fbe0d46e05fb6d",
+        "android_client_info": {
+          "package_name": "mx.com.ferthronix.fragments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249459402776-49p13bj5l3obhf4ctgga3umjdi6b3mtc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX-bmRML8cx_eNXYlDAmZTsWfOYJmNzko"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249459402776-49p13bj5l3obhf4ctgga3umjdi6b3mtc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

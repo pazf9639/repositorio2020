@@ -85,7 +85,12 @@ public class MainActivity extends AppCompatActivity implements NavigationHost {
                 .add(R.id.contentPanel, new Cate())
                 .commit();
     }
-
+    public void admin(View view) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.contentPanel,new Administra())
+                .commit();
+    }
     @Override
     public void navigateTo(androidx.fragment.app.Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction =
